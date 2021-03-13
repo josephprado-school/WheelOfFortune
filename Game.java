@@ -7,14 +7,25 @@ public class Game {
    private boolean isGameOver = false;
    private boolean playAnotherGame = true;
    private int gameNumber = 1;
-   
-   // method that increments the current round
-   public void setCurrentRound() {
+
+   public void playRound(Puzzle puzzle, Player player, Settings settings, Wheel wheel, Game game) {
+      printGameStatus(puzzle, player, settings);
+      wheel.spinTheWheel();
       currentRound++;
+      if (!wheel.getIsBankrupt()) {
+         printGameStatus(puzzle, player, settings);
+         puzzle.checkGuess();
+         printRoundResults(puzzle, wheel);
+      } else {
+         System.out.println("\nSorry, you lose a turn.");
+      }
+      player.updatePlayerBalance(game, wheel);
+      System.out.format("Your total winnings are: $%,d%n", player.getPlayerBalance());
+      setIsGameOver(puzzle, settings);
    }
    
    // method that prints the current status of the game (puzzle status, player balance, rounds remaining, etc.)
-   public void printGameStatus(Puzzle puzzle, Player player, Settings settings) {
+   private void printGameStatus(Puzzle puzzle, Player player, Settings settings) {
       System.out.println();
       System.out.println("====================================================================================================");
       System.out.println("Category: " + puzzle.getMyPuzzleCategory());
@@ -28,7 +39,7 @@ public class Game {
    }
 
    // method that prints the results of the player's guess and calculates the prize to be awarded
-   public void printRoundResults(Puzzle puzzle, Wheel wheel) {
+   private void printRoundResults(Puzzle puzzle, Wheel wheel) {
       System.out.println();
       System.out.println("====================================================================================================");
       if (puzzle.getIsGuessCorrect()) {
@@ -43,7 +54,7 @@ public class Game {
    }
    
    // method that checks if game has ended (by a player winning or by the max number of rounds expiring)
-   public void setIsGameOver(Puzzle puzzle, Settings settings) {
+   private void setIsGameOver(Puzzle puzzle, Settings settings) {
       int numRoundsRemaining = settings.getMaxNumRounds() - currentRound;
       if (puzzle.getIsPuzzleSolved() || numRoundsRemaining == 0) {
          isGameOver = true;
@@ -52,9 +63,25 @@ public class Game {
          isGameOver = false;
       }
    }
+
+   // method that analyzes game outcome and prints the results
+   public void gameOverProcedures(Puzzle puzzle, Player player, Settings settings) {
+      printGameOverMessage(puzzle, player);
+      System.out.println();
+      if (puzzle.getIsPuzzleSolved()) {
+         player.setNumGamesWon();
+      }
+      for (int i = 0; i < settings.getNumPlayers(); i++) {
+         System.out.format(
+            settings.getListOfPlayers()[i].getPlayerName()
+            + " Cash Won: $%,d", settings.getListOfPlayers()[i].getPlayerBalance()
+         );
+         System.out.println("; Games Won: " + settings.getListOfPlayers()[i].getNumGamesWon());
+      }
+   }
    
    // method that prints the outcome of the game
-   public void printGameOverMessage(Puzzle puzzle, Player player) {
+   private void printGameOverMessage(Puzzle puzzle, Player player) {
       System.out.println();
       System.out.println("====================================================================================================");
       System.out.println("Answer: " + puzzle.getMyPuzzle());

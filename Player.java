@@ -16,13 +16,19 @@ public class Player {
    }
 
    // a method that updates the players balance; if bankrupt, multiplies balance by 0
-   public void setPlayerBalance(int prize, int multiplier) {
-      playerBalance += prize;
+   public void updatePlayerBalance(Game game, Wheel wheel) {
+      int multiplier;
+      if (wheel.getIsBankrupt()) {
+          multiplier = 0;
+      } else {
+          multiplier = 1;
+      }
+      playerBalance += game.getPrizeAward();
       playerBalance *= multiplier;
-   }
+  }
    
-   public void setNumGamesWon(int games) {
-      numGamesWon += games;
+   public void setNumGamesWon() {
+      numGamesWon++;
    }
    
    public String getPlayerName() {
