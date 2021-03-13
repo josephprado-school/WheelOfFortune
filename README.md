@@ -13,7 +13,7 @@ will continue until either the max number of rounds have expired, or the player 
 puzzle.
 
 How to run the program:
-Download all eight .java files and the ListOfPuzzles.csv, and save them in the same directory.
+Download all seven .java files and the ListOfPuzzles.csv, and save them in the same directory.
 Compile and then run the file named WheelOfFortune.java. Throughout the game, the player will 
 be promted for user input through the keyboard. Enter the appropriate inputs 
 ("y" for yes, "n" for no, integers, etc.).
