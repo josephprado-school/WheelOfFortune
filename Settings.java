@@ -1,19 +1,11 @@
-// Author: Joe Prado
-// Date: 2/25/2021
-// File: CS210 Final Project - Wheel of Fortune Game
-
 // a class that configures the game's various settings
-
-import java.util.Scanner;
 
 public class Settings {
    private int numPlayers = 0;
    private int maxNumRounds = 25;
-   private int prizeValueIncrement = 1_000;
+   private int prizeValueIncrement = 1000;
    private boolean allowBankruptcy = true;
    private Player[] listOfPlayers;
-   
-   Scanner keyboard = new Scanner(System.in);
    
    // print game rules
    public void printGameRules() {
@@ -37,104 +29,51 @@ public class Settings {
       System.out.println();
    }
    
-   // intial game setup, sets number of players, number of rounds, prize increment, and enables/disables bankruptcy
+   // intial game setup; sets number of players, number of rounds, prize increment, and enables/disables bankruptcy
    public void gameSetup() {
       System.out.println("Let's begin.");
       setNumPlayers();
       createNewPlayers(numPlayers);
-      String changeSettings;
-      do {
-         System.out.println();
-         System.out.println("Would you like to change the game's defualt settings?");
-         System.out.print("Enter 'y' for yes, 'n' for no: ");
-         changeSettings = keyboard.next().substring(0,1).toLowerCase();
-         switch (changeSettings) {
-            case "y":
-               setMaxNumRounds();
-               setPrizeValueIncrement();
-               setAllowBankruptcy();
-               break;
-            case "n":
-               break;
-            default:
-               break;
-         }
-      } while (!changeSettings.equals("y") && !changeSettings.equals("n"));
+      String prompt = "Would you like to change the game's defualt settings? \nEnter 'y' for yes, 'n' for no";
+      boolean changeSettings = Keyboard.getYesOrNo(prompt);
+      if (changeSettings) {
+         setMaxNumRounds();
+         setPrizeValueIncrement();
+         setAllowBankruptcy();
+      }
    }
    
-   // method that takes number of players and creates new player objects
+   // method that takes number of players and creates an array of players
    public void createNewPlayers(int numOfPlayers) {
       listOfPlayers = new Player[numOfPlayers];
       for (int i = 0; i < numOfPlayers; i++) {
-         System.out.println();
-         System.out.print("Player" + (i + 1) + " Name: ");
-         String name = keyboard.next();
+         String name = Keyboard.getString("Player" + (i + 1) + " Name");
          listOfPlayers[i] = new Player(name);
       }
    }
    
    // method that sets number of players
    public void setNumPlayers() {
-      do {
-         try {
-            System.out.println();
-            System.out.print("How many players will be playing? \nEnter an integer from 1-4: ");
-            numPlayers = keyboard.nextInt();
-            continue;
-         } catch (java.util.InputMismatchException e) {
-            keyboard.next();
-            continue;
-         }
-      } while (numPlayers < 1 || numPlayers > 4);
+      String prompt = "How many players will be playing? \nEnter an integer from 1-4";
+      numPlayers = Keyboard.getInteger(prompt, 1, 4);
    }
    
    // method that sets maximum number of rounds
    public void setMaxNumRounds() {
-      do {
-         try {
-            System.out.println();
-            System.out.print("Maximum Number of Rounds \nEnter an integer value >= 1: ");
-            maxNumRounds = keyboard.nextInt();
-            continue;
-         } catch (java.util.InputMismatchException e) {
-            keyboard.next();
-            continue;
-         }
-      } while (maxNumRounds < 1);
+      String prompt = "Maximum Number of Rounds \nEnter an integer from 1-25";
+      maxNumRounds = Keyboard.getInteger(prompt, 1, 25);
    }
    
    // method that sets prize value increment
    public void setPrizeValueIncrement() {
-      do {
-         try {
-            System.out.println();
-            System.out.print("Prize Value Increment \nEnter and integer value >= 100: ");
-            prizeValueIncrement = keyboard.nextInt();
-            continue;
-         } catch (java.util.InputMismatchException e) {
-            keyboard.next();
-            continue;
-         }
-      } while (prizeValueIncrement < 100);
+      String prompt = "Prize Value Increment \nEnter and integer value >= 100";
+      prizeValueIncrement = Keyboard.getInteger(prompt, 100);
    }
    
+   // method that enables/disables the bankruptcy position on the wheel
    public void setAllowBankruptcy() {
-      String bankrupt;
-      do {
-         System.out.println();
-         System.out.print("Allow Bankruptcy? \nEnter 'y' for yes, 'n' for no: ");
-         bankrupt = keyboard.next().substring(0,1).toLowerCase();
-         switch (bankrupt) {
-            case "y":
-               allowBankruptcy = true;
-               break;
-            case "n":
-               allowBankruptcy = false;
-               break;
-            default:
-               break;   
-         }
-      } while (!bankrupt.equals("y") && !bankrupt.equals("n"));
+      String prompt = "Allow Bankruptcy? \nEnter 'y' for yes, 'n' for no";
+      allowBankruptcy = Keyboard.getYesOrNo(prompt);
    }
    
    public int getNumPlayers() {

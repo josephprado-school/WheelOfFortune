@@ -1,46 +1,51 @@
-// Author: Joe Prado
-// Date: 2/25/2021
-// File: CS210 Final Project - Wheel of Fortune Game
-
-// a class that retreives a random puzzle from a list
-
-import java.util.Scanner;
 import java.io.*;
 
+// a class that retreives a random puzzle from a list
 public class Game {
    private int currentRound = 0;
-   private int prizeWinnings;
+   private int prizeAward;
    private boolean isGameOver = false;
    private boolean playAnotherGame = true;
    private int gameNumber = 1;
    
-   Scanner keybaord = new Scanner(System.in);
-   
+   // method that increments the current round
    public void setCurrentRound() {
       currentRound++;
    }
    
-   public void printSpinsRemaining(int maxNumRounds) {
-      System.out.println("Number of spins remaining: " + (maxNumRounds - currentRound));
-   }
-   
-   public void printRoundResults(boolean isGuessCorrect, int numLettersRevealed, int prizeValue) {
+   // method that prints the current status of the game (puzzle status, player balance, rounds remaining, etc.)
+   public void printGameStatus(Puzzle puzzle, Player player, Settings settings) {
       System.out.println();
       System.out.println("====================================================================================================");
-      if (isGuessCorrect) {
-         prizeWinnings = numLettersRevealed * prizeValue;
-         System.out.println("Correct! There are " + numLettersRevealed + " of those.");
-         System.out.format("You just won $%,d%n", prizeWinnings);
+      System.out.println("Category: " + puzzle.getMyPuzzleCategory());
+      System.out.println();
+      System.out.println(puzzle.getMyPuzzleBlanks());
+      System.out.println();
+      System.out.println("Player: " + player.getPlayerName());
+      System.out.format("Balance: $%,d%n", player.getPlayerBalance());
+      System.out.println("Number of spins remaining: " + (settings.getMaxNumRounds() - currentRound));
+      System.out.println("Previous incorrect guesses: " + puzzle.getGuessTracker());
+   }
+
+   // method that prints the results of the player's guess and calculates the prize to be awarded
+   public void printRoundResults(Puzzle puzzle, Wheel wheel) {
+      System.out.println();
+      System.out.println("====================================================================================================");
+      if (puzzle.getIsGuessCorrect()) {
+         prizeAward = puzzle.getNumLettersRevealed() * wheel.getPrizeValue();
+         System.out.println("Correct! There are " + puzzle.getNumLettersRevealed() + " of those.");
+         System.out.format("You just won $%,d%n", prizeAward);
       } else {
-         prizeWinnings = 0;
+         prizeAward = 0;
          System.out.println("Sorry, there aren't any of those.");
          System.out.println("You did not win anything this round.");
       }
    }
    
-   public void setIsGameOver(boolean isPuzzleSolved, int maxNumRounds) {
-      int numRoundsRemaining = maxNumRounds - currentRound;
-      if (isPuzzleSolved || numRoundsRemaining == 0) {
+   // method that checks if game has ended (by a player winning or by the max number of rounds expiring)
+   public void setIsGameOver(Puzzle puzzle, Settings settings) {
+      int numRoundsRemaining = settings.getMaxNumRounds() - currentRound;
+      if (puzzle.getIsPuzzleSolved() || numRoundsRemaining == 0) {
          isGameOver = true;
          currentRound = 0;
       } else {
@@ -48,20 +53,32 @@ public class Game {
       }
    }
    
-   public void printGameOverMessage(boolean isPuzzleSolved, String myPuzzle, int balance, String playerName) {
+   // method that prints the outcome of the game
+   public void printGameOverMessage(Puzzle puzzle, Player player) {
       System.out.println();
       System.out.println("====================================================================================================");
-      System.out.println("Answer: " + myPuzzle);
+      System.out.println("Answer: " + puzzle.getMyPuzzle());
       System.out.println();
       
-      if (isPuzzleSolved) {
-         System.out.println(playerName + ", you win!");
-         System.out.format("Your total winnings are: $%,d%n", balance);
+      if (puzzle.getIsPuzzleSolved()) {
+         System.out.println(player.getPlayerName() + ", you win!");
+         System.out.format("Your total winnings are: $%,d%n", player.getPlayerBalance());
       } else {
          System.out.println("You're out of spins! Sorry, better luck next time.");
       }
    }
+
+   // method that asks player if they would like to play another game
+   public boolean setPlayAnotherGame() {
+      String prompt = "Would you like to play another game? \nEnter 'y' for yes, 'n' for no";
+      playAnotherGame = Keyboard.getYesOrNo(prompt);
+      if (playAnotherGame) {
+         isGameOver = false;
+      }
+      return playAnotherGame;
+   }
    
+   // method that saves the game results to a file
    public void saveGameStats(Player[] listOfPlayers) throws IOException {
       FileWriter outputFile = new FileWriter("GameStats.txt", true);
       outputFile.write("Game " + gameNumber + "Results: ");
@@ -75,34 +92,12 @@ public class Game {
    public int getCurrentRound() {
       return currentRound;
    }
+
+   public int getPrizeAward() {
+      return prizeAward;
+   }
    
    public boolean getIsGameOver() {
       return isGameOver;
-   }
-   
-   public int getPrizeWinnings() {
-      return prizeWinnings;
-   }
-   
-   public boolean setPlayAnotherGame() {
-      String newGame;
-      do {
-         System.out.println();
-         System.out.println("Would you like to play another game?");
-         System.out.print("Enter 'y' for yes, 'n' for no: ");
-         newGame = keybaord.next().substring(0,1).toLowerCase();
-         switch (newGame) {
-            case "y":
-               playAnotherGame = true;
-               isGameOver = false;
-               break;
-            case "n":
-               playAnotherGame = false;
-               break;
-            default:
-               break;
-         }
-      } while (!newGame.equals("y") && !newGame.equals("n"));
-      return playAnotherGame;
    }
 }

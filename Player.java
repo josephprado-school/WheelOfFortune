@@ -1,20 +1,12 @@
-// Author: Joe Prado
-// Date: 2/25/2021
-// File: CS210 Final Project - Wheel of Fortune Game
-
 // a class of objects that stores player data
-
-import java.util.Scanner;
 
 public class Player {
    private String playerName;
    private int playerBalance = 0;
    private int numGamesWon = 0;
    
-   Scanner keyboard = new Scanner(System.in);
-   
-   public Player(String name) {
-      playerName = name;
+   public Player(String playerName) {
+      this.playerName = playerName;
    }
    
    public void printPlayerStats() {
@@ -22,26 +14,16 @@ public class Player {
       System.out.println("Player: " + playerName);
       System.out.format("Balance: $%,d%n", playerBalance);
    }
-   
-   // setter methods
-   
-   public void setPlayerName(String name) {
-      playerName = name;
-   }
-   
-   public void setPlayerBalance(int prize, boolean isBankrupt) {
-      if (isBankrupt) {
-         playerBalance = 0;
-      } else {
+
+   // a method that updates the players balance; if bankrupt, multiplies balance by 0
+   public void setPlayerBalance(int prize, int multiplier) {
       playerBalance += prize;
-      }
+      playerBalance *= multiplier;
    }
    
    public void setNumGamesWon(int games) {
       numGamesWon += games;
    }
-   
-   // getter methods
    
    public String getPlayerName() {
       return playerName;

@@ -1,13 +1,8 @@
-// Author: Joe Prado
-// Date: 2/25/2021
-// File: CS210 Final Project - Wheel of Fortune Game
-
-// a class that retreives a random puzzle from a list
-
 import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
 
+// a class that retreives a random puzzle from a list and tracks the progress of the puzzle
 public class Puzzle {
    private String myPuzzle;
    private String myPuzzleCategory;
@@ -18,19 +13,16 @@ public class Puzzle {
    private int numLettersRevealed;
    private boolean isGuessCorrect;
    private boolean isPuzzleSolved;
-   
-   Scanner keyboard = new Scanner(System.in);
-   
+      
    // method that retrieves a random puzzle from a file and sets the puzzle, category, blanks and solution fields
    public void generatePuzzle(String puzzleFile) throws IOException {
       File listOfPuzzles = new File(puzzleFile);
       while (!listOfPuzzles.exists()) {
-         System.out.println();
-         System.out.print("A file does not exist at the specified location. Please enter a valid file name: ");
-         listOfPuzzles = new File(keyboard.next());
+         String prompt = "A file does not exist at the specified location. Please enter a valid file name";
+         listOfPuzzles = new File(Keyboard.getString(prompt));
       }
       Scanner countLines = new Scanner(listOfPuzzles);
-      Scanner readFile = new Scanner(listOfPuzzles);
+      Scanner readLines = new Scanner(listOfPuzzles);
       Random random = new Random();
       
       // count number of lines in the file and search for header text to determine first line that contains a puzzle
@@ -50,9 +42,9 @@ public class Puzzle {
       int randomLine = random.nextInt(totalLinesInFile - firstPuzzleLine) + firstPuzzleLine;
       String myLine = "";
       for (int i = 1; i <= randomLine; i++) {
-         myLine = readFile.nextLine();
+         myLine = readLines.nextLine();
       }
-      readFile.close();
+      readLines.close();
       myPuzzle = myLine.substring(myLine.indexOf("|") + 1).toUpperCase(); 
       myPuzzleCategory = myLine.substring(0, myLine.indexOf("|"));
       
@@ -119,16 +111,7 @@ public class Puzzle {
          }
       } 
    }
-   
-   // method that prints the current status of the puzzle, with correct letters revealed
-   public void printMyPuzzleStatus() {
-      System.out.println();
-      System.out.println("====================================================================================================");
-      System.out.println("Category: " + myPuzzleCategory);
-      System.out.println();
-      System.out.println(myPuzzleBlanks);
-   }
-   
+
    // method that takes the player's guess and checks it against each character in the solution
    // if it matches, reveal the letter(s) in the puzzleBlanks field
    public void checkGuess() {
@@ -136,9 +119,8 @@ public class Puzzle {
       boolean attemptedToSolve = false;
       String myPuzzleBlanksUpdated = "";
       
-      System.out.println();
-      System.out.print("Guess a letter (A-Z) or attempt to solve the puzzle: ");
-      guess = keyboard.nextLine().toUpperCase();
+      String prompt = "Guess a letter (A-Z) or attempt to solve the puzzle";
+      guess = Keyboard.getString(prompt).toUpperCase();
       
       if (guess.length() == 1) {
          // player guesses a single letter
@@ -182,12 +164,20 @@ public class Puzzle {
       }
    }
    
-   public void printGuessTracker() {
-      System.out.println("Previous incorrect guesses: " + guessTracker);
-   }
-   
    public String getMyPuzzle() {
       return myPuzzle;
+   }
+
+   public String getMyPuzzleCategory() {
+      return myPuzzleCategory;
+   }
+
+   public String getMyPuzzleBlanks() {
+      return myPuzzleBlanks;
+   }
+
+   public String getGuessTracker() {
+      return guessTracker;
    }
    
    public int getNumLettersRevealed() {

@@ -1,6 +1,6 @@
 # WheelOfFortune
 CS210 Final Project
-Date	: 3/12/2021
+Date: 3/12/2021
 ================================================
 
 Explanation:
@@ -13,14 +13,11 @@ will continue until either the max number of rounds have expired, or the player 
 puzzle.
 
 How to run the program:
-Download all six .java files and the ListOfPuzzles.csv, and save them in the same directory.
-Compile and then run the file named WheelOfFortune.java. Throught the game, the player will 
+Download all eight .java files and the ListOfPuzzles.csv, and save them in the same directory.
+Compile and then run the file named WheelOfFortune.java. Throughout the game, the player will 
 be promted for user input through the keyboard. Enter the appropriate inputs 
 ("y" for yes, "n" for no, integers, etc.).
 
 Known bugs:
-1. At the start of the program, after designating how many players will be playing,
-the program will ask the user to name the players. If the user inputs a space in any of the names,
-the name of the current player will be the text before the space, and the name of the next player
-will be the text after the space (e.g., if you try to name player 1 "John Smith", player 1 will be
-"John" and player 2 will be "Smith").
+1. when making a guess, nothing prevents a player from guessing the same letter more than once, meaning that
+they are able to keep guessing the same letter over and over and keep winning cash
