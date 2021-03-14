@@ -35,7 +35,7 @@ public class WheelOfFortune {
                // each player continues their round until one of the following:
                // a) player makes a wrong guess, b) player goes bankrupt, or c) game is over
                do {
-                  game.playRound(puzzle, listOfPlayers[currentPlayer], settings, wheel, game);
+                  game.playRound(puzzle, listOfPlayers[currentPlayer], settings, wheel);
                } while (puzzle.getIsGuessCorrect() && !wheel.getIsBankrupt() && !game.getIsGameOver());
                // break player loop if game is over
                if (game.getIsGameOver()) {

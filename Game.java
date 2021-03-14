@@ -8,18 +8,29 @@ public class Game {
    private boolean playAnotherGame = true;
    private int gameNumber = 1;
 
-   public void playRound(Puzzle puzzle, Player player, Settings settings, Wheel wheel, Game game) {
+   // method that progresses the game through 1 round
+   // 1. player spins the wheel
+   // 2. player makes a guess (if not bankrupt)
+   // 3. check geuss against puzzle, if correct, award prize to player
+   // 4. check if game is over
+   public void playRound(Puzzle puzzle, Player player, Settings settings, Wheel wheel) {
       printGameStatus(puzzle, player, settings);
       wheel.spinTheWheel();
       currentRound++;
+      
+      // if bankrupt, skip round; otherwise take player guess and dislay guess results
+      int balanceMultiplier = 1;
       if (!wheel.getIsBankrupt()) {
          printGameStatus(puzzle, player, settings);
          puzzle.checkGuess();
          printRoundResults(puzzle, wheel);
       } else {
+         balanceMultiplier = 0;
          System.out.println("\nSorry, you lose a turn.");
       }
-      player.updatePlayerBalance(game, wheel);
+
+      // update player balance
+      player.setPlayerBalance(prizeAward, balanceMultiplier);
       System.out.format("Your total winnings are: $%,d%n", player.getPlayerBalance());
       setIsGameOver(puzzle, settings);
    }
@@ -114,14 +125,6 @@ public class Game {
          listOfPlayers[i].getPlayerName();
       }
       outputFile.close();
-   }
-   
-   public int getCurrentRound() {
-      return currentRound;
-   }
-
-   public int getPrizeAward() {
-      return prizeAward;
    }
    
    public boolean getIsGameOver() {

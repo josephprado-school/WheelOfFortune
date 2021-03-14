@@ -8,22 +8,10 @@ public class Player {
    public Player(String playerName) {
       this.playerName = playerName;
    }
-   
-   public void printPlayerStats() {
-      System.out.println();
-      System.out.println("Player: " + playerName);
-      System.out.format("Balance: $%,d%n", playerBalance);
-   }
 
-   // a method that updates the players balance; if bankrupt, multiplies balance by 0
-   public void updatePlayerBalance(Game game, Wheel wheel) {
-      int multiplier;
-      if (wheel.getIsBankrupt()) {
-          multiplier = 0;
-      } else {
-          multiplier = 1;
-      }
-      playerBalance += game.getPrizeAward();
+   // a method that updates the players balance
+   public void setPlayerBalance(int prizeAward, int multiplier) {
+      playerBalance += prizeAward;
       playerBalance *= multiplier;
   }
    

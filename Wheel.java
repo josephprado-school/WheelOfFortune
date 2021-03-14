@@ -29,8 +29,8 @@ public class Wheel {
       int wheelSpin = 0;
       
       // promt user for wheel spin power and generate a random int to add to player's specified wheel spin power
-      String prompt = "How hard would you like to spin the wheel? \nEnter and integer value > 0";
-      wheelSpin = Keyboard.getInteger(prompt, 1) + random.nextInt(6);
+      wheelSpin = Keyboard.getInteger("How hard would you like to spin the wheel? \nEnter and integer value > 0", 1)
+                  + random.nextInt(6);
       System.out.println("Wheel Spin Distance: " + wheelSpin);
       
       // rotate the wheel 1 position and print value; if at max postion, reset to position 0

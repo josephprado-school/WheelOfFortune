@@ -29,51 +29,24 @@ public class Settings {
       System.out.println();
    }
    
-   // intial game setup; sets number of players, number of rounds, prize increment, and enables/disables bankruptcy
+   // intial game setup; sets number of players and allows user to change default game settings
    public void gameSetup() {
       System.out.println("Let's begin.");
-      setNumPlayers();
-      createNewPlayers(numPlayers);
-      String prompt = "Would you like to change the game's defualt settings? \nEnter 'y' for yes, 'n' for no";
-      boolean changeSettings = Keyboard.getYesOrNo(prompt);
+
+      // player creation
+      numPlayers = Keyboard.getInteger("How many players will be playing? \nEnter an integer from 1-4", 1, 4);
+      listOfPlayers = new Player[numPlayers];
+      for (int i = 0; i < numPlayers; i++) {
+         listOfPlayers[i] = new Player(Keyboard.getString("Player" + (i + 1) + " Name"));
+      }
+      
+      // optional settings configuration
+      boolean changeSettings = Keyboard.getYesOrNo("Would you like to change the game's defualt settings? \nEnter 'y' for yes, 'n' for no");
       if (changeSettings) {
-         setMaxNumRounds();
-         setPrizeValueIncrement();
-         setAllowBankruptcy();
+         maxNumRounds = Keyboard.getInteger("Maximum Number of Rounds \nEnter an integer from 1-25", 1, 25);
+         prizeValueIncrement = Keyboard.getInteger("Prize Value Increment \nEnter and integer value >= 100", 100);
+         allowBankruptcy = Keyboard.getYesOrNo("Allow Bankruptcy? \nEnter 'y' for yes, 'n' for no");
       }
-   }
-   
-   // method that takes number of players and creates an array of players
-   public void createNewPlayers(int numOfPlayers) {
-      listOfPlayers = new Player[numOfPlayers];
-      for (int i = 0; i < numOfPlayers; i++) {
-         String name = Keyboard.getString("Player" + (i + 1) + " Name");
-         listOfPlayers[i] = new Player(name);
-      }
-   }
-   
-   // method that sets number of players
-   public void setNumPlayers() {
-      String prompt = "How many players will be playing? \nEnter an integer from 1-4";
-      numPlayers = Keyboard.getInteger(prompt, 1, 4);
-   }
-   
-   // method that sets maximum number of rounds
-   public void setMaxNumRounds() {
-      String prompt = "Maximum Number of Rounds \nEnter an integer from 1-25";
-      maxNumRounds = Keyboard.getInteger(prompt, 1, 25);
-   }
-   
-   // method that sets prize value increment
-   public void setPrizeValueIncrement() {
-      String prompt = "Prize Value Increment \nEnter and integer value >= 100";
-      prizeValueIncrement = Keyboard.getInteger(prompt, 100);
-   }
-   
-   // method that enables/disables the bankruptcy position on the wheel
-   public void setAllowBankruptcy() {
-      String prompt = "Allow Bankruptcy? \nEnter 'y' for yes, 'n' for no";
-      allowBankruptcy = Keyboard.getYesOrNo(prompt);
    }
    
    public int getNumPlayers() {
