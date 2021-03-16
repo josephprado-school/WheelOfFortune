@@ -120,13 +120,14 @@ public class Game {
    public void saveGameStats(Player[] listOfPlayers, Puzzle puzzle) throws IOException {
       FileWriter outputFile = new FileWriter("GameStats.txt", true);
       outputFile.write("\n\nGame " + gameNumber + " Results: ");
+      outputFile.write("\nPuzzle Category: " + puzzle.getMyPuzzleCategory());
       outputFile.write("\nPuzzle Solution: " + puzzle.getMyPuzzle());
 
       for (int i = 0; i < listOfPlayers.length; i++) {
          outputFile.write("\n");
          outputFile.write(listOfPlayers[i].getPlayerName() + ": ");
-         outputFile.write("Balance: " + listOfPlayers[i].getPlayerBalance());
-         outputFile.write("\tGames Won: " + listOfPlayers[i].getNumGamesWon());
+         outputFile.write("Balance: $" + listOfPlayers[i].getPlayerBalance() + ", ");
+         outputFile.write("Games Won: " + listOfPlayers[i].getNumGamesWon());
       }
       outputFile.close();
       gameNumber++;
