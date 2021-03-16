@@ -117,14 +117,19 @@ public class Game {
    }
    
    // method that saves the game results to a file
-   public void saveGameStats(Player[] listOfPlayers) throws IOException {
+   public void saveGameStats(Player[] listOfPlayers, Puzzle puzzle) throws IOException {
       FileWriter outputFile = new FileWriter("GameStats.txt", true);
-      outputFile.write("Game " + gameNumber + "Results: ");
+      outputFile.write("\n\nGame " + gameNumber + " Results: ");
+      outputFile.write("\nPuzzle Solution: " + puzzle.getMyPuzzle());
 
       for (int i = 0; i < listOfPlayers.length; i++) {
-         listOfPlayers[i].getPlayerName();
+         outputFile.write("\n");
+         outputFile.write(listOfPlayers[i].getPlayerName() + ": ");
+         outputFile.write("Balance: " + listOfPlayers[i].getPlayerBalance());
+         outputFile.write("\tGames Won: " + listOfPlayers[i].getNumGamesWon());
       }
       outputFile.close();
+      gameNumber++;
    }
    
    public boolean getIsGameOver() {
