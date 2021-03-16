@@ -6,6 +6,7 @@ public class Wheel {
    private int numPositionsOnWheel = 12;
    private int prizeValue = 0;
    private boolean isBankrupt = false;
+   Keyboard keyboard = new Keyboard();
    
    Random random = new Random();
    int[] wheelPrizes = new int[numPositionsOnWheel];
@@ -29,7 +30,7 @@ public class Wheel {
       int wheelSpin = 0;
       
       // promt user for wheel spin power and generate a random int to add to player's specified wheel spin power
-      wheelSpin = Keyboard.getInteger("How hard would you like to spin the wheel? \nEnter and integer value > 0", 1)
+      wheelSpin = keyboard.getInteger("How hard would you like to spin the wheel?", 1)
                   + random.nextInt(6);
       System.out.println("Wheel Spin Distance: " + wheelSpin);
       

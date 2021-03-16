@@ -6,6 +6,7 @@ public class Settings {
    private int prizeValueIncrement = 1000;
    private boolean allowBankruptcy = true;
    private Player[] listOfPlayers;
+   Keyboard keyboard = new Keyboard();
    
    // print game rules
    public void printGameRules() {
@@ -34,18 +35,18 @@ public class Settings {
       System.out.println("Let's begin.");
 
       // player creation
-      numPlayers = Keyboard.getInteger("How many players will be playing? \nEnter an integer from 1-4", 1, 4);
+      numPlayers = keyboard.getInteger("How many players will be playing?", 1, 4);
       listOfPlayers = new Player[numPlayers];
       for (int i = 0; i < numPlayers; i++) {
-         listOfPlayers[i] = new Player(Keyboard.getString("Player" + (i + 1) + " Name"));
+         listOfPlayers[i] = new Player(keyboard.getString("Player" + (i + 1) + " Name"));
       }
       
       // optional settings configuration
-      boolean changeSettings = Keyboard.getYesOrNo("Would you like to change the game's defualt settings? \nEnter 'y' for yes, 'n' for no");
+      boolean changeSettings = keyboard.getYesOrNo("Would you like to change the game's defualt settings?");
       if (changeSettings) {
-         maxNumRounds = Keyboard.getInteger("Maximum Number of Rounds \nEnter an integer from 1-25", 1, 25);
-         prizeValueIncrement = Keyboard.getInteger("Prize Value Increment \nEnter and integer value >= 100", 100);
-         allowBankruptcy = Keyboard.getYesOrNo("Allow Bankruptcy? \nEnter 'y' for yes, 'n' for no");
+         maxNumRounds = keyboard.getInteger("Maximum Number of Rounds", 1, 25);
+         prizeValueIncrement = keyboard.getInteger("Prize Value Increment", 100);
+         allowBankruptcy = keyboard.getYesOrNo("Allow Bankruptcy?");
       }
    }
    

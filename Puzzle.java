@@ -13,13 +13,13 @@ public class Puzzle {
    private int numLettersRevealed;
    private boolean isGuessCorrect;
    private boolean isPuzzleSolved;
+   Keyboard keyboard = new Keyboard();
       
    // method that retrieves a random puzzle from a file and sets the puzzle, category, blanks and solution fields
    public void generatePuzzle(String puzzleFile) throws IOException {
       File listOfPuzzles = new File(puzzleFile);
       while (!listOfPuzzles.exists()) {
-         String prompt = "A file does not exist at the specified location. Please enter a valid file name";
-         listOfPuzzles = new File(Keyboard.getString(prompt));
+         listOfPuzzles = new File(keyboard.getString("A file does not exist at the specified location. Please enter a valid file name"));
       }
       Scanner countLines = new Scanner(listOfPuzzles);
       Scanner readLines = new Scanner(listOfPuzzles);
@@ -119,8 +119,7 @@ public class Puzzle {
       boolean attemptedToSolve = false;
       String myPuzzleBlanksUpdated = "";
       
-      String prompt = "Guess a letter (A-Z) or attempt to solve the puzzle";
-      guess = Keyboard.getString(prompt).toUpperCase();
+      guess = keyboard.getString("Guess a letter (A-Z) or attempt to solve the puzzle").toUpperCase();
       
       if (guess.length() == 1) {
          // player guesses a single letter

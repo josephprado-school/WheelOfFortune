@@ -7,6 +7,7 @@ public class Game {
    private boolean isGameOver = false;
    private boolean playAnotherGame = true;
    private int gameNumber = 1;
+   Keyboard keyboard = new Keyboard();
 
    // method that progresses the game through 1 round
    // 1. player spins the wheel
@@ -108,8 +109,7 @@ public class Game {
 
    // method that asks player if they would like to play another game
    public boolean setPlayAnotherGame() {
-      String prompt = "Would you like to play another game? \nEnter 'y' for yes, 'n' for no";
-      playAnotherGame = Keyboard.getYesOrNo(prompt);
+      playAnotherGame = keyboard.getYesOrNo("Would you like to play another game?");
       if (playAnotherGame) {
          isGameOver = false;
       }
