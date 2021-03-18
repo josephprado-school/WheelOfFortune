@@ -1,32 +1,45 @@
 // a class of objects that stores player data
 
 public class Player {
-   private String playerName;
-   private int playerBalance = 0;
+   private String name;
+   private int currentBalance = 0;
+   private int runningBalance = 0;
    private int numGamesWon = 0;
    
-   public Player(String playerName) {
-      this.playerName = playerName;
+   public Player(String name) {
+      this.name = name;
    }
 
    // a method that updates the players balance
-   public void setPlayerBalance(int prizeAward, int multiplier) {
-      playerBalance += prizeAward;
-      playerBalance *= multiplier;
-  }
+   public void updateCurrentBalance(int prizeAward, int multiplier) {
+      currentBalance += prizeAward;
+      currentBalance *= multiplier;
+   }
+
+   public void updateRunningBalance() {
+      runningBalance += currentBalance;
+   }
+
+   public void resetCurrentBalance() {
+      currentBalance = 0;
+   }
    
    public void setNumGamesWon() {
       numGamesWon++;
    }
    
-   public String getPlayerName() {
-      return playerName;
+   public String getName() {
+      return name;
    }
    
-   public int getPlayerBalance() {
-      return playerBalance;
+   public int getCurrentBalance() {
+      return currentBalance;
    }
    
+   public int getRunningBalance() {
+      return runningBalance;
+   }
+
    public int getNumGamesWon() {
       return numGamesWon;
    }

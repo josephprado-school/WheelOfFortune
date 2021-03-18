@@ -49,7 +49,6 @@ public class WheelOfFortune {
          }
          // game over
          game.gameOverProcedures(puzzle, listOfPlayers[currentPlayer], settings);
-         game.saveGameStats(listOfPlayers, puzzle);
       } while (game.setPlayAnotherGame());
    }
 }

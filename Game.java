@@ -5,11 +5,13 @@ public class Game {
    private int currentRound = 0;
    private int prizeAward;
    private boolean isGameOver = false;
+   private String gameResults = "";
+   private String winner = "";
    private boolean playAnotherGame = true;
    private int gameNumber = 1;
    Keyboard keyboard = new Keyboard();
 
-   // method that progresses the game through 1 round
+   // method that advances the game through 1 round
    // 1. player spins the wheel
    // 2. player makes a guess (if not bankrupt)
    // 3. check geuss against puzzle, if correct, award prize to player
@@ -31,8 +33,8 @@ public class Game {
       }
 
       // update player balance
-      player.setPlayerBalance(prizeAward, balanceMultiplier);
-      System.out.format("Your total winnings are: $%,d%n", player.getPlayerBalance());
+      player.updateCurrentBalance(prizeAward, balanceMultiplier);
+      System.out.format("Your current balance is: $%,d%n", player.getCurrentBalance());
       setIsGameOver(puzzle, settings);
    }
    
@@ -44,8 +46,8 @@ public class Game {
       System.out.println();
       System.out.println(puzzle.getMyPuzzleBlanks());
       System.out.println();
-      System.out.println("Player: " + player.getPlayerName());
-      System.out.format("Balance: $%,d%n", player.getPlayerBalance());
+      System.out.println("Player: " + player.getName());
+      System.out.format("Balance: $%,d%n", player.getCurrentBalance());
       System.out.println("Number of spins remaining: " + (settings.getMaxNumRounds() - currentRound));
       System.out.println("Previous incorrect guesses: " + puzzle.getGuessTracker());
    }
@@ -76,35 +78,54 @@ public class Game {
       }
    }
 
-   // method that analyzes game outcome and prints the results
-   public void gameOverProcedures(Puzzle puzzle, Player player, Settings settings) {
+   // method that closes out the game, prints the results and saves game date to file
+   public void gameOverProcedures(Puzzle puzzle, Player player, Settings settings) throws IOException {
       printGameOverMessage(puzzle, player);
-      System.out.println();
-      if (puzzle.getIsPuzzleSolved()) {
-         player.setNumGamesWon();
-      }
-      for (int i = 0; i < settings.getNumPlayers(); i++) {
-         System.out.format(
-            settings.getListOfPlayers()[i].getPlayerName()
-            + " Cash Won: $%,d", settings.getListOfPlayers()[i].getPlayerBalance()
-         );
-         System.out.println("; Games Won: " + settings.getListOfPlayers()[i].getNumGamesWon());
-      }
+      printGameResults(puzzle, settings);
+      saveGameResults();
+      gameResults = "";
+      gameNumber++;
    }
    
    // method that prints the outcome of the game
    private void printGameOverMessage(Puzzle puzzle, Player player) {
       System.out.println();
       System.out.println("====================================================================================================");
-      System.out.println("Answer: " + puzzle.getMyPuzzle());
-      System.out.println();
-      
+
       if (puzzle.getIsPuzzleSolved()) {
-         System.out.println(player.getPlayerName() + ", you win!");
-         System.out.format("Your total winnings are: $%,d%n", player.getPlayerBalance());
+         player.setNumGamesWon();
+         winner = player.getName();
+         System.out.println(winner + ", you win!");
+         System.out.format("Your total winnings are: $%,d%n", player.getCurrentBalance());
       } else {
+         winner = "n/a";
          System.out.println("You're out of spins! Sorry, better luck next time.");
       }
+   }
+   
+   private void printGameResults(Puzzle puzzle, Settings settings) {
+      gameResults += "\nGame " + gameNumber + " Results: ";
+      gameResults += "\nCategory: " + puzzle.getMyPuzzleCategory();
+      gameResults += "\nSolution: " + puzzle.getMyPuzzle();
+      gameResults += "\nWinner: " + winner;
+      gameResults += "\n\n";
+      for (int i = 0; i < settings.getNumPlayers(); i++) {
+         settings.getListOfPlayers()[i].updateRunningBalance();
+         gameResults += settings.getListOfPlayers()[i].getName();
+         gameResults += String.format(" Cash Won: $%,d", settings.getListOfPlayers()[i].getCurrentBalance());
+         gameResults += String.format("; Total Balance: $%,d", settings.getListOfPlayers()[i].getRunningBalance());
+         gameResults += "; Games Won: " + settings.getListOfPlayers()[i].getNumGamesWon();
+         gameResults += "\n";
+         settings.getListOfPlayers()[i].resetCurrentBalance();
+      }
+      System.out.println(gameResults);
+   }
+
+   // method that saves the game's results to a file
+   private void saveGameResults() throws IOException {
+      FileWriter outputFile = new FileWriter("GameResults.txt", true);
+      outputFile.write("\n" + gameResults);
+      outputFile.close();
    }
 
    // method that asks player if they would like to play another game
@@ -114,23 +135,6 @@ public class Game {
          isGameOver = false;
       }
       return playAnotherGame;
-   }
-   
-   // method that saves the game results to a file
-   public void saveGameStats(Player[] listOfPlayers, Puzzle puzzle) throws IOException {
-      FileWriter outputFile = new FileWriter("GameStats.txt", true);
-      outputFile.write("\n\nGame " + gameNumber + " Results: ");
-      outputFile.write("\nPuzzle Category: " + puzzle.getMyPuzzleCategory());
-      outputFile.write("\nPuzzle Solution: " + puzzle.getMyPuzzle());
-
-      for (int i = 0; i < listOfPlayers.length; i++) {
-         outputFile.write("\n");
-         outputFile.write(listOfPlayers[i].getPlayerName() + ": ");
-         outputFile.write("Balance: $" + listOfPlayers[i].getPlayerBalance() + ", ");
-         outputFile.write("Games Won: " + listOfPlayers[i].getNumGamesWon());
-      }
-      outputFile.close();
-      gameNumber++;
    }
    
    public boolean getIsGameOver() {
