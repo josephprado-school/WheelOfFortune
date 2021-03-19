@@ -18,5 +18,8 @@ Run the file named WheelOfFortune.java. Throughout the game, the player will be 
 input through the keyboard. Enter the appropriate inputs ("y" for yes, "n" for no, integers, etc.).
 
 Known bugs:
-1. when making a guess, nothing prevents a player from guessing the same letter more than once, meaning that
+1. When making a guess, nothing prevents a player from guessing the same letter more than once, meaning that
 they are able to keep guessing the same letter over and over and keep winning cash
+
+2. Program does not have a built-in quit function. Once program has started, player will not have the option 
+to quit (exit the program) until the current game has ended.
