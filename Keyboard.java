@@ -46,6 +46,7 @@ public class Keyboard {
                 output = scanner.nextDouble();
                 scanner.nextLine();
             } catch (java.util.InputMismatchException e) {
+                output = min - 1;
                 scanner.next();
                 continue;
             }
@@ -55,7 +56,7 @@ public class Keyboard {
 
     // method that validates integer input for min values
     public int getInteger(String prompt, int min) {
-        double output = 0;
+        double output = 0.0;
         do {
             try {
                 System.out.println();
@@ -64,6 +65,7 @@ public class Keyboard {
                 output = scanner.nextDouble();
                 scanner.nextLine();
             } catch (java.util.InputMismatchException e) {
+                output = min - 1;
                 scanner.next();
                 continue;
             }
