@@ -14,9 +14,8 @@ puzzle.
 
 How to run the program:
 Download all seven .java files and the ListOfPuzzles.csv, and save them in the same directory.
-Compile and then run the file named WheelOfFortune.java. Throughout the game, the player will 
-be promted for user input through the keyboard. Enter the appropriate inputs 
-("y" for yes, "n" for no, integers, etc.).
+Run the file named WheelOfFortune.java. Throughout the game, the player will be promted for user
+input through the keyboard. Enter the appropriate inputs ("y" for yes, "n" for no, integers, etc.).
 
 Known bugs:
 1. when making a guess, nothing prevents a player from guessing the same letter more than once, meaning that
